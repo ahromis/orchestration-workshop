@@ -103,10 +103,8 @@ Docker <br/> Orchestration <br/> Workshop
 
 ## Intros
 
-- Hello! We are
-  AJ ([@s0ulshake](https://twitter.com/s0ulshake))
-  &
-  Jérôme ([@jpetazzo](https://twitter.com/jpetazzo))
+- Hello! I am
+  Andrew ([@hromis](https://twitter.com/hromis))
 
 --
 
@@ -362,9 +360,9 @@ wait
 
 ---
 
-## We will (mostly) interact with node1 only
+## We will (mostly) interact with node0 only
 
-- Unless instructed, **all commands must be run from the first VM, `node1`**
+- Unless instructed, **all commands must be run from the first VM, `node0`**
 
 - We will only checkout/copy the code on `node1`
 
@@ -639,7 +637,7 @@ and displays aggregated logs.
 Tip: use `^S` and `^Q` to pause/resume log output.
 
 ???
----
+???
 
 ## Upgrading from Compose 1.6
 
@@ -657,7 +655,7 @@ Tip: use `^S` and `^Q` to pause/resume log output.
 
   - new containers are automatically picked up by `docker-compose logs`
 
----
+???
 
 ## Connecting to the web UI
 
@@ -1252,7 +1250,7 @@ ehb0...4fvx    node2     Ready   Active
 
   (Our nodes have been suitably pre-configured to be controlled through `node1`)
 
----
+???
 
 ## Docker Machine
 
@@ -1272,7 +1270,7 @@ ehb0...4fvx    node2     Ready   Active
 
   - across different cloud providers
 
----
+???
 
 ## Docker Machine basic usage
 
@@ -1293,7 +1291,7 @@ ehb0...4fvx    node2     Ready   Active
 
 You should see your 5 nodes.
 
----
+???
 
 ## How did we make our 5 nodes show up there?
 
@@ -1311,7 +1309,7 @@ You should see your 5 nodes.
 
 - Docker Machine creates TLS certificates and deploys them to the nodes through SSH
 
----
+???
 
 ## Using Docker Machine to communicate with a node
 
@@ -1334,7 +1332,7 @@ You should see your 5 nodes.
 
 ## Getting the token
 
-- First, let's store the join token in a variable
+- Let's get the docker swarm join token
 
 .exercise[
 
@@ -1354,16 +1352,16 @@ You should see your 5 nodes.
 
 ## Adding a node through the Docker API
 
-- Now, let's use Docker Machine to switch to `node3` and add it to the cluster
+- Now, let's ssh to node2 and add it to the cluster
 
 .exercise[
 
-- Communicate with `node3`:
+- Communicate with `node2`:
   ```bash
-  eval $(docker-machine env node3)
+  ssh ubuntu@<node2-public-ip>
   ```
 
-- Add `node3` to the Swarm:
+- Add `node2` to the Swarm:
   ```bash
   docker swarm join --token $TOKEN node1:2377
   ```
@@ -1378,14 +1376,9 @@ reflecting the `DOCKER_HOST` variable.
 
 ## Checking that our node is here
 
-- We have to go back to the local node first
+- We have to go back to the local node first, from a manager run:
 
 .exercise[
-
-- Reset the environment variables:
-  ```bash
-  eval $(docker-machine env -u)
-  ```
 
 - Check that the node is here:
   ```bash
@@ -1479,11 +1472,11 @@ Some presentations from the Docker Distributed Systems Summit in Berlin:
   ([slides](http://www.slideshare.net/Docker/heart-of-the-swarmkit-store-topology-object-model))
   ([video](https://www.youtube.com/watch?v=EmePhjGnCXY))
 
----
+???
 
 ## Adding more manager nodes
 
-- Right now, we have only one manager (node1)
+- Right now, we have only one manager (node0)
 
 - If we lose it, we're SOL
 
@@ -1674,11 +1667,6 @@ As we saw earlier, you can only control the Swarm through a manager node.
 - View its logs:
   ```bash
   docker logs <containerID>
-  ```
-
-- Go back to `node1` afterwards by logging out of SSH, or by running:
-  ```bash
-  eval $(docker-machine env -u)
   ```
 
 ]
